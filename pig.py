@@ -1,6 +1,6 @@
 #import classes for setting up a new game
-from Die import Die
-from Game import Game
+from die import Die
+from game import Game
 
 def play_game():
     # set up game

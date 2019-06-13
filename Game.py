@@ -4,8 +4,7 @@ from textwrap import dedent
 # import get_terminal_size function from os to center console output
 from os import get_terminal_size
 
-from Player import Player, ComputerPlayer
-from Turn import Turn
+from player import Player, ComputerPlayer
 
 class Game:
     """
@@ -71,3 +70,17 @@ class Game:
         elif self.computer_player.is_winner():
             print(f"Player Two is the winner!")
 
+class Turn:
+    """
+    A Turn represents a single round of the game 'Pig' and keeps score for the round
+    Each turn, a Player rolls a Die and determines to 'Hold' (end the Turn) or roll again.
+    """
+    def __init__(self, player):
+        self.player = player
+        self.score = 0
+
+    def display_turn_score(self):
+        print(f"Turn score: {self.score}")
+
+    def add_roll_to_score(self, roll_value):
+        self.score += roll_value
