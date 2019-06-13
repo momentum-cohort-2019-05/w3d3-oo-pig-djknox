@@ -1,4 +1,6 @@
-from pig import Die, Player, Turn
+from Die import Die
+from Player import Player
+from Turn import Turn
 
 def test_a_die_returns_an_int_between_1_and_6_when_rolled():
     die = Die()
