@@ -20,8 +20,8 @@ class Game:
         - die -- the die used in the game
         """
         self.die = die
-        self.player_one = Player()
-        self.player_two = Player()
+        self.human_player = Player()
+        self.computer_player = ComputerPlayer()
 
     def determine_order_of_players(self):
         """
@@ -29,19 +29,21 @@ class Game:
         """
         if self.die.roll() > self.die.roll():
             print("Player One will go first.")
-            return self.player_one, self.player_two
+            return self.human_player, self.computer_player
         else:
             print("Player Two will go first.")
-            return self.player_two, self.player_one
+            return self.computer_player, self.human_player
 
     def play_turn(self, player):
         # instantiate new Turn with Player
         turn = Turn(player)
 
         # while Player wants to roll, roll die and add to turn score
+        # if a 1 is rolled (a "Pig") then set turn score to 0 and end turn
         # add turn score to player score when done rolling
-        while player.wants_to_roll():
+        while player.wants_to_roll(turn):
             roll_value = self.die.roll()
+            print(f"Roll: {roll_value}")
             if roll_value == 1:
                 print("You rolled a Pig!")
                 turn.score = 0
@@ -49,10 +51,21 @@ class Game:
             turn.add_roll_to_score(roll_value)
             print(f"Turn total score: {turn.score}")
         player.add_turn_score_to_score(turn.score)
-        print(f"Player score: {player.score}")
+        print(f"New score: {player.score}")
+
+    def display_scores(self):
+        print("Scores:")
+        print(f"Player one: {self.human_player.score}")
+        print(f"Player two: {self.computer_player.score}")
 
     def has_winner(self):
-        return self.player_one.is_winner() or self.player_two.is_winner()
+        return self.human_player.is_winner() or self.computer_player.is_winner()
+
+    def display_winner(self):
+        if self.human_player.is_winner():
+            print(f"Player One is the winner!")
+        elif self.computer_player.is_winner():
+            print(f"Player Two is the winner!")
 
 class Turn:
     """
@@ -89,15 +102,21 @@ class Player:
     def is_winner(self):
         return self.score >= 100
 
-    def wants_to_roll(self):
-        invalid_response = True
-        while invalid_response:
-            roll_or_hold = input("Do you want to (r)oll or (h)old? ").lower()[0]
-            if roll_or_hold in ("r", "h"):
-                return roll_or_hold == 'r'
+    def wants_to_roll(self, turn):
+        while True:
+            roll_or_hold = input("Do you want to (r)oll or (h)old? ")
+            if roll_or_hold:
+                if roll_or_hold.lower()[0] in ['r', 'h']:
+                    return roll_or_hold == 'r'
             else:
                 print("I don't understand, please try again.")
-        
+
+class ComputerPlayer(Player):
+    """
+    A ComputerPlayer will always roll will if their turn score is less than 20.
+    """
+    def wants_to_roll(self, turn):
+        return turn.score <= 20
 
 def play_game():
     # set up game
@@ -109,6 +128,9 @@ def play_game():
     while not game.has_winner():
         game.play_turn(first_player)
         game.play_turn(second_player)
+        game.display_scores()
+
+    game.display_winner()
 
 
 if __name__ == "__main__":
