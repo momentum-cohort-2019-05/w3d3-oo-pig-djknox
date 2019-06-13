@@ -1,4 +1,11 @@
-import random
+# import randint from random for random number generation
+from random import randint
+
+# import dedent function from textwrap module to fix indentation of multi-line strings
+from textwrap import dedent
+
+# import get_terminal_size function from os to center console output
+from os import get_terminal_size
 
 class Die:
     """
@@ -8,7 +15,7 @@ class Die:
         pass
     
     def roll(self):
-        return random.randint(1, 6)
+        return randint(1, 6)
 
 class Game:
     """
@@ -22,6 +29,13 @@ class Game:
         self.die = die
         self.human_player = Player()
         self.computer_player = ComputerPlayer()
+    
+    def display_welcome(self):
+        print(f"{'Welcome to Pig!':^{get_terminal_size().columns}}")
+
+    def display_instructions(self):
+        print(f"{'For each turn, you will choose to either roll a die or hold to end the turn.':^{get_terminal_size().columns}}")
+        print(f"{'If you roll a 1, your turn will be ended and you will get no points for that turn.':^{get_terminal_size().columns}}")
 
     def determine_order_of_players(self):
         """
@@ -119,6 +133,8 @@ def play_game():
     # set up game
     die = Die()
     game = Game(die)
+    game.display_welcome()
+    game.display_instructions()
     first_player, second_player = game.determine_order_of_players()
     
     # first player plays turn
