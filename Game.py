@@ -4,7 +4,30 @@ from textwrap import dedent
 # import get_terminal_size function from os to center console output
 from os import get_terminal_size
 
+#import classes for setting up a new game
+from die import Die
 from player import Player, ComputerPlayer
+
+class GameController:
+    """
+    A GameController sets up and controls playing of the game 'Pig'
+    """
+    def __init__(self):
+        self.die = Die()
+        self.game = Game(self.die)
+
+    def play_game(self):
+        self.game.display_welcome()
+        self.game.display_instructions()
+        first_player, second_player = self.game.determine_order_of_players()
+        
+        # play turns until game has winner
+        while not self.game.has_winner():
+            self.game.play_turn(first_player)
+            self.game.play_turn(second_player)
+            self.game.display_scores()
+
+        self.game.display_winner()
 
 class Game:
     """
