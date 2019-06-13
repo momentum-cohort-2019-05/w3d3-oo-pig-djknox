@@ -81,9 +81,6 @@ class Turn:
 
     def add_roll_to_score(self, roll_value):
         self.score += roll_value
-        if roll_value == 1:
-            self.score = 0
-
 
 class Player:
     """
@@ -131,7 +128,6 @@ def play_game():
         game.display_scores()
 
     game.display_winner()
-
 
 if __name__ == "__main__":
     play_game()
