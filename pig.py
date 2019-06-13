@@ -28,10 +28,10 @@ class Game:
         Have each player roll a die; return the player with the highest roll.
         """
         if self.die.roll() > self.die.roll():
-            print("Player One will go first.")
+            print("You will go first.")
             return self.human_player, self.computer_player
         else:
-            print("Player Two will go first.")
+            print("Computer player will go first.")
             return self.computer_player, self.human_player
 
     def play_turn(self, player):
